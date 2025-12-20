@@ -22,9 +22,9 @@ The project is currently under active development.
 
 ### Frontend
 
-- Flutter
-- Dart
-- Material UI
+- Flutter 3.35.4 • channel stable
+- Framework • revision d693b4b9db
+- Tools • Dart 3.9.2 • DevTools 2.48.0
 
 ### Backend (Planned / In Progress)
 
@@ -32,12 +32,7 @@ The project is currently under active development.
 - TypeScript
 - Socket.IO
 - REST / WebSocket APIs
-
-### Tooling
-
-- Git & GitHub
-- VS Code
-- Flutter SDK
+- firship
 
 ---
 
