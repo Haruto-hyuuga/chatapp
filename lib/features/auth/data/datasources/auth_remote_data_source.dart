@@ -1,10 +1,10 @@
 import 'dart:convert';
-
+import 'package:chatapp/core/globals.dart';
 import 'package:chatapp/features/auth/data/models/user_model.dart';
 import 'package:http/http.dart' as http;
 
 class AuthRemoteDataSource {
-  final String baseUrl = 'http://localhost:6000/auth';
+  final String baseUrl = '$backendApiBaseUrl/auth';
 
   Future<UserModel> login({
     required String email,

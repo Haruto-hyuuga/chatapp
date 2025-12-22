@@ -29,6 +29,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final user = await loginUseCase.call(event.email, event.password);
       await _storage.write(key: 'token', value: user.token);
+      await _storage.write(key: 'userId', value: user.id);
       emit(AuthSuccess(message: 'Account Logged-in  Successfully.'));
     } catch (e) {
       emit(AuthFailure(error: 'Login Failed.'));

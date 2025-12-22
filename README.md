@@ -28,8 +28,9 @@ The project is currently under active development.
 
 ### Backend (Planned / In Progress)
 
-- Node.js
+- Node.js (node paks are listed in backen repository)
 - TypeScript
+- postresql
 - Socket.IO
 - REST / WebSocket APIs
 - firship
@@ -56,11 +57,13 @@ chatapp/
 
 ### Prerequisites
 
-- Flutter SDK installed
+Install these (im not goin to explain how, you can find it on thier official documentaions)
+
+- Flutter SDK
 
 - Git installed
 
-- Android Emulator or physical device
+- Android Emulator or physical device (with debug mode)
 
 ### Clone the Repository
 
@@ -84,16 +87,14 @@ chatapp/
 
 ### Already Implemented
 
-- Flutter project initialized
-- GitHub repository setup
-- Clean project structure
-- Cross-platform support (Flutter default)
+- Base ui pages
+- user authentication
 
 ### In Progress
 
 - Almost everything
-- UI layout for chat screens
-- Message input and display components
+- UI layout for chat conversations
+- Message display components
 - App theming and styling
 
 ### Planned Features
@@ -106,25 +107,23 @@ chatapp/
 
 - Message timestamps & read receipts
 
-- Media sharing (images, files)
+- Media sharing (images, files) (maybe)
 
 - AI-powered chat assistance
 
 - Message moderation
 
-- telegram clone 👀
-
 ---
 
 # 🧩 TODO List
 
-[ ] Design chat UI (message bubbles, input bar)
+[tick] Design chat UI (message bubbles, input bar)
 
 [ ] Implement Socket.IO client in Flutter
 
 [ ] Create backend server
 
-[ ] Add user authentication
+[tick] Add user authentication
 
 [ ] Connect frontend with backend
 
@@ -138,11 +137,8 @@ chatapp/
 
 # 📖 Development Notes
 
-This project follows an incremental development approach.
-
-Major features are implemented step-by-step to keep the codebase stable.
-
-Refactoring is expected as architecture evolves.
+> This project is rushed not my best work, there will be lot of bugs which will be fixed overtime, also i suck at writting SQL queries so most bugs will arise from there only.
+> Major features will be copied from telegram and implemented step-by-step until everything crashes and falls apart..
 
 ---
 
