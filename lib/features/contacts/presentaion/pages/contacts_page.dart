@@ -1,3 +1,4 @@
+import 'package:chatapp/features/chat/presentaion/pages/chat_page.dart';
 import 'package:chatapp/features/contacts/presentaion/bloc/contacts_bloc.dart';
 import 'package:chatapp/features/contacts/presentaion/bloc/contacts_event.dart';
 import 'package:chatapp/features/contacts/presentaion/bloc/contacts_state.dart';
@@ -26,36 +27,57 @@ class _ContactsPageState extends State<ContactsPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: BlocBuilder<ContactsBloc, ContactsState>(
-        builder: (context, state) {
-          if (state is ContactsLoading) {
-            return Center(child: CircularProgressIndicator());
-          } else if (state is ContactsLoaded) {
-            return ListView.builder(
-              itemCount: state.contacts.length,
-              itemBuilder: (context, index) {
-                final contact = state.contacts[index];
-                return ListTile(
-                  title: Text(contact.username),
-                  subtitle: Text(contact.email),
-                  onTap: () {
-                    Navigator.pop(context, contact);
-                  },
-                );
-              },
+      body: BlocListener<ContactsBloc, ContactsState>(
+        listener: (context, state) async {
+          final contactsBloc = BlocProvider.of<ContactsBloc>(context);
+          if (state is ConversationReady) {
+            var res = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatPage(
+                  conversationId: state.conversationId,
+                  fullName: state.contactName,
+                ),
+              ),
             );
-          } else if (state is ContactsError) {
-            return Center(
-              child: Text(state.message, style: TextStyle(color: Colors.red)),
-            );
+            if (res == null) {
+              contactsBloc.add(FetchContacts());
+            }
           }
-          return Center(
-            child: Text(
-              "No contacts found",
-              style: TextStyle(color: Colors.lightBlue),
-            ),
-          );
         },
+        child: BlocBuilder<ContactsBloc, ContactsState>(
+          builder: (context, state) {
+            if (state is ContactsLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is ContactsLoaded) {
+              return ListView.builder(
+                itemCount: state.contacts.length,
+                itemBuilder: (context, index) {
+                  final contact = state.contacts[index];
+                  return ListTile(
+                    title: Text(contact.username),
+                    subtitle: Text(contact.email),
+                    onTap: () {
+                      BlocProvider.of<ContactsBloc>(context).add(
+                        CheckOrCreateConversation(contact.id, contact.username),
+                      );
+                    },
+                  );
+                },
+              );
+            } else if (state is ContactsError) {
+              return Center(
+                child: Text(state.message, style: TextStyle(color: Colors.red)),
+              );
+            }
+            return Center(
+              child: Text(
+                "No contacts found",
+                style: TextStyle(color: Colors.lightBlue),
+              ),
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddContactDialog(context),

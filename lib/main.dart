@@ -17,6 +17,7 @@ import 'package:chatapp/features/contacts/domain/usecases/fetch_contacts_use_cas
 import 'package:chatapp/features/contacts/presentaion/bloc/contacts_bloc.dart';
 import 'package:chatapp/features/conversation/data/datasources/conversations_remote_data_source.dart';
 import 'package:chatapp/features/conversation/data/repositories/conversation_repository_impl.dart';
+import 'package:chatapp/features/conversation/domain/usecases/check_or_create_conversation_use_case.dart';
 import 'package:chatapp/features/conversation/domain/usecases/fetch_conversation_use_case.dart';
 import 'package:chatapp/features/conversation/presentaion/bloc/conversation_bloc.dart';
 import 'package:chatapp/features/conversation/presentaion/pages/conversation_page.dart';
@@ -99,6 +100,10 @@ class MyApp extends StatelessWidget {
             ),
             addContactUseCase: AddContactUseCase(
               contactsRepository: contactsRepository,
+            ),
+            checkOrCreateConversationUseCase: CheckOrCreateConversationUseCase(
+              conversationsRepository:
+                  conversationRepository, //ConversationRepositoryImpl
             ),
           ),
         ),
