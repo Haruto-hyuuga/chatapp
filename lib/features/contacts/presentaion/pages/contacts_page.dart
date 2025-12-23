@@ -25,6 +25,7 @@ class _ContactsPageState extends State<ContactsPage> {
       appBar: AppBar(
         title: Text("Contacts"),
         backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
         elevation: 0,
       ),
       body: BlocListener<ContactsBloc, ContactsState>(
@@ -55,8 +56,14 @@ class _ContactsPageState extends State<ContactsPage> {
                 itemBuilder: (context, index) {
                   final contact = state.contacts[index];
                   return ListTile(
-                    title: Text(contact.username),
-                    subtitle: Text(contact.email),
+                    title: Text(
+                      contact.username,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    subtitle: Text(
+                      contact.email,
+                      style: TextStyle(color: Colors.lightBlueAccent),
+                    ),
                     onTap: () {
                       BlocProvider.of<ContactsBloc>(context).add(
                         CheckOrCreateConversation(contact.id, contact.username),
@@ -118,7 +125,7 @@ class _ContactsPageState extends State<ContactsPage> {
                 Navigator.pop(context);
               }
             },
-            child: Text("Add", style: Theme.of(context).textTheme.bodyMedium),
+            child: Text("Add", style: TextStyle(color: Colors.black)),
           ),
         ],
       ),

@@ -25,9 +25,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/auth/presentaion/pages/register_page.dart';
 
-void main() async {
-  final socketService = SocketService();
-  await socketService.initSocket();
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
 
   final authRepository = AuthRepositoryImpl(
     authRemoteDataSource: AuthRemoteDataSource(),
@@ -41,8 +40,10 @@ void main() async {
   final contactsRepository = ContactsRepositoryImpl(
     remoteDataSource: ContactsRemoteDataSource(),
   );
+
   runApp(
     MyApp(
+      socketService: SocketService(),
       authRepository: authRepository,
       conversationRepository: conversationRepository,
       messagesRepository: messagesRepository,
@@ -51,7 +52,8 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  final SocketService socketService;
   final AuthRepositoryImpl authRepository;
   final ConversationRepositoryImpl conversationRepository;
   final MessageRepositoryImpl messagesRepository;
@@ -59,28 +61,39 @@ class MyApp extends StatelessWidget {
 
   const MyApp({
     super.key,
+    required this.socketService,
     required this.authRepository,
     required this.conversationRepository,
     required this.messagesRepository,
     required this.contactsRepository,
   });
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    widget.socketService.initSocket();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
           create: (_) => AuthBloc(
-            registerUseCase: RegisterUseCase(repository: authRepository),
-            loginUseCase: LoginUseCase(repository: authRepository),
+            registerUseCase: RegisterUseCase(repository: widget.authRepository),
+            loginUseCase: LoginUseCase(repository: widget.authRepository),
           ),
         ),
 
         BlocProvider(
           create: (_) => ConversationBloc(
             fetchConversationUseCase: FetchConversationUseCase(
-              repository: conversationRepository,
+              repository: widget.conversationRepository,
             ),
           ),
         ),
@@ -88,7 +101,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => ChatBloc(
             fetchMessagesUseCase: FetchMessagesUseCase(
-              messagesRepository: messagesRepository,
+              messagesRepository: widget.messagesRepository,
             ),
           ),
         ),
@@ -96,14 +109,14 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => ContactsBloc(
             fetchContactsUseCase: FetchContactsUseCase(
-              contactsRepository: contactsRepository,
+              contactsRepository: widget.contactsRepository,
             ),
             addContactUseCase: AddContactUseCase(
-              contactsRepository: contactsRepository,
+              contactsRepository: widget.contactsRepository,
             ),
             checkOrCreateConversationUseCase: CheckOrCreateConversationUseCase(
               conversationsRepository:
-                  conversationRepository, //ConversationRepositoryImpl
+                  widget.conversationRepository, //ConversationRepositoryImpl
             ),
           ),
         ),

@@ -29,7 +29,7 @@ class ConversationsRemoteDataSource {
 
     final response = await http.post(
       Uri.parse('$baseUrl/conversation/check-or-create'),
-      body: jsonEncode({contactId: contactId}),
+      body: jsonEncode({'contactId': contactId}),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',

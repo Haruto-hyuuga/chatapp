@@ -18,11 +18,14 @@ class AuthRemoteDataSource {
     return UserModel.fromJson(jsonDecode(response.body)['user']);
   }
 
-  Future<UserModel> register({
+  Future<void> register({
     required String username,
     required String email,
     required String password,
   }) async {
+    // print(
+    //   "Sending Req: \nusername: $username \n email: $email \n password: $password",
+    // );
     final response = await http.post(
       Uri.parse('$baseUrl/register'),
       body: jsonEncode({
@@ -32,6 +35,10 @@ class AuthRemoteDataSource {
       }),
       headers: {'Content-Type': 'application/json'},
     );
-    return UserModel.fromJson(jsonDecode(response.body)['user']);
+    // print("Response Body:");
+    // print(response.body);
+    if (response.statusCode != 201) {
+      throw Exception('Registration failed: ${response.body}');
+    }
   }
 }
