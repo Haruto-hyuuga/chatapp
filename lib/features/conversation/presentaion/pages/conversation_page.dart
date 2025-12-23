@@ -1,5 +1,6 @@
 import 'package:chatapp/core/theme.dart';
 import 'package:chatapp/features/chat/presentaion/pages/chat_page.dart';
+import 'package:chatapp/features/contacts/presentaion/pages/contacts_page.dart';
 import 'package:chatapp/features/conversation/presentaion/bloc/conversation_bloc.dart';
 import 'package:chatapp/features/conversation/presentaion/bloc/conversation_event.dart';
 import 'package:chatapp/features/conversation/presentaion/bloc/conversation_state.dart';
@@ -107,6 +108,16 @@ class _ConversationPageState extends State<ConversationPage> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ContactsPage()),
+          );
+        },
+        backgroundColor: DefaultColors.contactButtonColor,
+        child: Icon(Icons.contacts),
       ),
     );
   }

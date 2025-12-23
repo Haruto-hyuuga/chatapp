@@ -2,10 +2,10 @@ import 'package:chatapp/features/conversation/domain/entities/conversation_entit
 
 class ConversationModel extends ConversationEntity {
   ConversationModel({
-    required id,
-    required participantName,
-    required lastMessage,
-    required lastMessageTime,
+    required String id,
+    required String participantName,
+    required String lastMessage,
+    required DateTime lastMessageTime,
   }) : super(
          id: id,
          participantName: participantName,

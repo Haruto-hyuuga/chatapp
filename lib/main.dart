@@ -1,3 +1,4 @@
+import 'package:chatapp/core/socket_service.dart';
 import 'package:chatapp/features/chat/data/datasources/messages_remote_data_source.dart';
 import 'package:chatapp/features/chat/data/repositories/message_repository_impl.dart';
 import 'package:chatapp/features/chat/domain/usecases/fetch_messages_use_case.dart';
@@ -9,6 +10,11 @@ import 'package:chatapp/features/auth/domain/usecases/login_use_case.dart';
 import 'package:chatapp/features/auth/domain/usecases/register_use_case.dart';
 import 'package:chatapp/features/auth/presentaion/bloc/auth_bloc.dart';
 import 'package:chatapp/features/auth/presentaion/pages/login_page.dart';
+import 'package:chatapp/features/contacts/data/datasources/contacts_remote_data_source.dart';
+import 'package:chatapp/features/contacts/data/repositories/contacts_repository_impl.dart';
+import 'package:chatapp/features/contacts/domain/usecases/add_contact_use_case.dart';
+import 'package:chatapp/features/contacts/domain/usecases/fetch_contacts_use_case.dart';
+import 'package:chatapp/features/contacts/presentaion/bloc/contacts_bloc.dart';
 import 'package:chatapp/features/conversation/data/datasources/conversations_remote_data_source.dart';
 import 'package:chatapp/features/conversation/data/repositories/conversation_repository_impl.dart';
 import 'package:chatapp/features/conversation/domain/usecases/fetch_conversation_use_case.dart';
@@ -18,7 +24,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/auth/presentaion/pages/register_page.dart';
 
-void main() {
+void main() async {
+  final socketService = SocketService();
+  await socketService.initSocket();
+
   final authRepository = AuthRepositoryImpl(
     authRemoteDataSource: AuthRemoteDataSource(),
   );
@@ -28,11 +37,15 @@ void main() {
   final messagesRepository = MessageRepositoryImpl(
     remoteDataSource: MessagesRemoteDataSource(),
   );
+  final contactsRepository = ContactsRepositoryImpl(
+    remoteDataSource: ContactsRemoteDataSource(),
+  );
   runApp(
     MyApp(
       authRepository: authRepository,
       conversationRepository: conversationRepository,
       messagesRepository: messagesRepository,
+      contactsRepository: contactsRepository,
     ),
   );
 }
@@ -41,12 +54,14 @@ class MyApp extends StatelessWidget {
   final AuthRepositoryImpl authRepository;
   final ConversationRepositoryImpl conversationRepository;
   final MessageRepositoryImpl messagesRepository;
+  final ContactsRepositoryImpl contactsRepository;
 
   const MyApp({
     super.key,
     required this.authRepository,
     required this.conversationRepository,
     required this.messagesRepository,
+    required this.contactsRepository,
   });
 
   // This widget is the root of your application.
@@ -73,6 +88,17 @@ class MyApp extends StatelessWidget {
           create: (_) => ChatBloc(
             fetchMessagesUseCase: FetchMessagesUseCase(
               messagesRepository: messagesRepository,
+            ),
+          ),
+        ),
+
+        BlocProvider(
+          create: (_) => ContactsBloc(
+            fetchContactsUseCase: FetchContactsUseCase(
+              contactsRepository: contactsRepository,
+            ),
+            addContactUseCase: AddContactUseCase(
+              contactsRepository: contactsRepository,
             ),
           ),
         ),
