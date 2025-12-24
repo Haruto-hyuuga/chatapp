@@ -16,6 +16,7 @@ class ContactsRemoteDataSource {
     );
     if (response.statusCode == 200) {
       List data = jsonDecode(response.body);
+      // print(data);
       return data.map((json) => ContactsModel.fromJson(json)).toList();
     } else {
       throw Exception('Failed to fetch contacts');

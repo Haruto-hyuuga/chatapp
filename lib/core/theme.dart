@@ -18,6 +18,8 @@ class DefaultColors {
   static const Color messageListPage = Color(0xFF292F3F);
   static const Color buttonColor = Color(0xFF7A8194);
   static const Color contactButtonColor = Color(0xFF5F84E9);
+  static const Color profileIconBackground = Color(0xFFFFFFFF);
+  static const Color chatAppBar = Color(0xFF1C1C1C);
 }
 
 class AppTheme {

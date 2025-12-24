@@ -37,7 +37,7 @@ paste your media to use in assets folder, then edit pubspec.yaml and add this un
 flutter:
   assets:
     # whole folder
-    - assets/img/extra/
+    - assets/img/
     #perticular media
     - assets/img/extra/Placeholder.jpg
 ```

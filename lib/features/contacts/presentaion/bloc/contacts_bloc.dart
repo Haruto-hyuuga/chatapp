@@ -50,6 +50,7 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
         ConversationReady(
           conversationId: conversationId,
           contactName: event.contactName,
+          contactProfileUrl: event.contactProfileUrl,
         ),
       );
     } catch (error) {

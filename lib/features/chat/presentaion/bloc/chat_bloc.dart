@@ -53,6 +53,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       'content': event.content,
       'senderId': userId,
     };
+    print(newMessage);
     _socketService.socket.emit('sendMessage', newMessage);
   }
 

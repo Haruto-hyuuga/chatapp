@@ -17,7 +17,7 @@ class SocketService {
     _socket = IO.io(
       backendApiBaseUrl,
       IO.OptionBuilder()
-          .setTransports(['websockets'])
+          .setTransports(['websocket'])
           .disableAutoConnect()
           .setExtraHeaders({'Authorization': 'Bearer $token'})
           .build(),

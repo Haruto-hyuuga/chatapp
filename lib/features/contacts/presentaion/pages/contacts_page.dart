@@ -1,3 +1,4 @@
+import 'package:chatapp/core/theme.dart';
 import 'package:chatapp/features/chat/presentaion/pages/chat_page.dart';
 import 'package:chatapp/features/contacts/presentaion/bloc/contacts_bloc.dart';
 import 'package:chatapp/features/contacts/presentaion/bloc/contacts_event.dart';
@@ -26,7 +27,24 @@ class _ContactsPageState extends State<ContactsPage> {
         title: Text("Contacts"),
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
-        elevation: 0,
+        elevation: 1,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 12.0),
+            child: TextButton.icon(
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              onPressed: () => _showAddContactDialog(context),
+              icon: Icon(Icons.add, size: 20),
+              label: Text("Add"),
+            ),
+          ),
+        ],
       ),
       body: BlocListener<ContactsBloc, ContactsState>(
         listener: (context, state) async {
@@ -37,7 +55,8 @@ class _ContactsPageState extends State<ContactsPage> {
               MaterialPageRoute(
                 builder: (context) => ChatPage(
                   conversationId: state.conversationId,
-                  fullName: state.contactName,
+                  participantName: state.contactName,
+                  participantProfileUrl: state.contactProfileUrl,
                 ),
               ),
             );
@@ -52,23 +71,44 @@ class _ContactsPageState extends State<ContactsPage> {
               return Center(child: CircularProgressIndicator());
             } else if (state is ContactsLoaded) {
               return ListView.builder(
+                padding: EdgeInsets.only(top: 10),
                 itemCount: state.contacts.length,
                 itemBuilder: (context, index) {
                   final contact = state.contacts[index];
-                  return ListTile(
-                    title: Text(
-                      contact.username,
-                      style: TextStyle(color: Colors.white),
+                  return Container(
+                    margin: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                    decoration: BoxDecoration(
+                      color: DefaultColors
+                          .messageListPage, // tile background color
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    subtitle: Text(
-                      contact.email,
-                      style: TextStyle(color: Colors.lightBlueAccent),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        radius: 25,
+                        backgroundImage: NetworkImage(contact.profileUrl),
+                        backgroundColor: DefaultColors.profileIconBackground,
+                      ),
+                      title: Text(
+                        contact.username,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        contact.email,
+                        style: TextStyle(color: Colors.lightBlueAccent),
+                      ),
+                      onTap: () {
+                        BlocProvider.of<ContactsBloc>(context).add(
+                          CheckOrCreateConversation(
+                            contact.id,
+                            contact.username,
+                            contact.profileUrl,
+                          ),
+                        );
+                      },
                     ),
-                    onTap: () {
-                      BlocProvider.of<ContactsBloc>(context).add(
-                        CheckOrCreateConversation(contact.id, contact.username),
-                      );
-                    },
                   );
                 },
               );
@@ -86,10 +126,10 @@ class _ContactsPageState extends State<ContactsPage> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddContactDialog(context),
-        child: Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () => _showAddContactDialog(context),
+      //   child: Icon(Icons.add),
+      // ),
     );
   }
 

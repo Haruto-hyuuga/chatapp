@@ -47,7 +47,18 @@ class _ConversationPageState extends State<ConversationPage> {
             padding: EdgeInsets.all(5),
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: [_buildRecentContact(context, "DSP")],
+              children: [
+                _buildRecentContact(
+                  context,
+                  "Gemini",
+                  'assets/img/logo/gemini-color.png',
+                ),
+                _buildRecentContact(
+                  context,
+                  "DSP",
+                  'assets/img/extra/RecentContactPlaceholder.jpg',
+                ),
+              ],
             ),
           ),
           SizedBox(height: 10),
@@ -76,13 +87,16 @@ class _ConversationPageState extends State<ConversationPage> {
                               MaterialPageRoute(
                                 builder: (context) => ChatPage(
                                   conversationId: conversation.id,
-                                  fullName: conversation.participantName,
+                                  participantName: conversation.participantName,
+                                  participantProfileUrl:
+                                      conversation.participantProfileUrl,
                                 ),
                               ),
                             );
                           },
                           child: _buildMessageTile(
                             conversation.participantName,
+                            conversation.participantProfileUrl,
                             conversation.lastMessage,
                             conversation.lastMessageTime.toString(),
                           ),
@@ -117,21 +131,24 @@ class _ConversationPageState extends State<ConversationPage> {
           );
         },
         backgroundColor: DefaultColors.contactButtonColor,
-        child: Icon(Icons.contacts),
+        child: Icon(Icons.contacts, color: Colors.white),
       ),
     );
   }
 
-  Widget _buildRecentContact(BuildContext context, String name) {
+  Widget _buildRecentContact(
+    BuildContext context,
+    String name,
+    String profilePic,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
           CircleAvatar(
             radius: 30,
-            backgroundImage: AssetImage(
-              'assets/img/extra/RecentContactPlaceholder.jpg',
-            ),
+            backgroundImage: AssetImage(profilePic),
+            backgroundColor: DefaultColors.profileIconBackground,
           ),
           SizedBox(height: 5),
           Text(name, style: Theme.of(context).textTheme.bodyMedium),
@@ -140,14 +157,18 @@ class _ConversationPageState extends State<ConversationPage> {
     );
   }
 
-  Widget _buildMessageTile(String name, String message, String time) {
+  Widget _buildMessageTile(
+    String name,
+    String profileUrl,
+    String message,
+    String time,
+  ) {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       leading: CircleAvatar(
         radius: 30,
-        backgroundImage: AssetImage(
-          'assets/img/extra/RecentContactPlaceholder.jpg',
-        ),
+        backgroundImage: NetworkImage(profileUrl),
+        backgroundColor: DefaultColors.profileIconBackground,
       ),
       title: Text(
         name,
