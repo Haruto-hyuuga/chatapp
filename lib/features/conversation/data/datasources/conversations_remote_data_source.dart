@@ -1,12 +1,13 @@
 import 'dart:convert';
-import 'package:chatapp/core/globals.dart';
 import 'package:chatapp/features/conversation/data/models/conversation_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class ConversationsRemoteDataSource {
-  final String baseUrl = backendApiBaseUrl;
+  final String baseUrl;
   final _storage = FlutterSecureStorage();
+
+  ConversationsRemoteDataSource({required this.baseUrl});
 
   Future<List<ConversationModel>> fetchConversations() async {
     String token = await _storage.read(key: 'token') ?? '';

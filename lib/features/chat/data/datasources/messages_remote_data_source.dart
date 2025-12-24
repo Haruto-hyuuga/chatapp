@@ -1,14 +1,14 @@
 import 'dart:convert';
-
-import 'package:chatapp/core/globals.dart';
 import 'package:chatapp/features/chat/data/models/message_model.dart';
 import 'package:chatapp/features/chat/domain/entities/message_entity.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class MessagesRemoteDataSource {
-  final String baseUrl = backendApiBaseUrl;
+  final String baseUrl;
   final _storage = FlutterSecureStorage();
+
+  MessagesRemoteDataSource({required this.baseUrl});
 
   Future<List<MessageEntity>> fetchMessages(String conversationId) async {
     String token = await _storage.read(key: 'token') ?? '';

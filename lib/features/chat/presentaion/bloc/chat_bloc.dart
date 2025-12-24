@@ -8,11 +8,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final FetchMessagesUseCase fetchMessagesUseCase;
-  final SocketService _socketService = SocketService();
+  final SocketService socketService;
   final List<MessageEntity> _messages = [];
   final _storage = FlutterSecureStorage();
 
-  ChatBloc({required this.fetchMessagesUseCase}) : super(ChatLoadingState()) {
+  ChatBloc({required this.fetchMessagesUseCase, required this.socketService})
+    : super(ChatLoadingState()) {
     on<LoadMessagesEvent>(_onLoadMessages);
     on<SendMessageEvent>(_onSendMessage);
     on<ReceiveMessageEvent>(_onReceiveMessage);
@@ -29,11 +30,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       _messages.addAll(messages);
       emit(ChatLoadedState(List.from(_messages)));
 
-      _socketService.socket.off('newMessage');
+      socketService.socket.off('newMessage');
 
-      _socketService.socket.emit('joinConversation', event.conversationId);
-      _socketService.socket.on('newMessage', (data) {
-        print("step1 - receive : $data");
+      socketService.socket.emit('joinConversation', event.conversationId);
+      socketService.socket.on('newMessage', (data) {
         add(ReceiveMessageEvent(data));
       });
     } catch (e) {
@@ -46,23 +46,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Emitter<ChatState> emit,
   ) async {
     String userId = await _storage.read(key: 'userId') ?? '';
-    print("userId: $userId");
 
     final newMessage = {
       'conversationId': event.conversationId,
       'content': event.content,
       'senderId': userId,
     };
-    print(newMessage);
-    _socketService.socket.emit('sendMessage', newMessage);
+    socketService.socket.emit('sendMessage', newMessage);
   }
 
   Future<void> _onReceiveMessage(
     ReceiveMessageEvent event,
     Emitter<ChatState> emit,
   ) async {
-    print("step2 - receive event called");
-    print(event.message);
     final message = MessageEntity(
       id: event.message['id'],
       conversationId: event.message['conversation_id'],

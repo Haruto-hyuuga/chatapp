@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ConversationBloc extends Bloc<ConversationEvent, ConversationState> {
   final FetchConversationUseCase fetchConversationUseCase;
-  final SocketService _socketService = SocketService();
+  final SocketService socketService;
 
   Future<void> _onFetchConversations(
     FetchConversations event,
@@ -27,14 +27,16 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationState> {
 
   void _initializeSocketListener() {
     try {
-      _socketService.socket.on('conversationUpdated', _onConversationUpdated);
+      socketService.socket.on('conversationUpdated', _onConversationUpdated);
     } catch (e) {
       print("ERROR.ConversationBloc: initializing socket listener: $e");
     }
   }
 
-  ConversationBloc({required this.fetchConversationUseCase})
-    : super(ConversationsInitial()) {
+  ConversationBloc({
+    required this.fetchConversationUseCase,
+    required this.socketService,
+  }) : super(ConversationsInitial()) {
     _initializeSocketListener();
     on<FetchConversations>(_onFetchConversations);
   }

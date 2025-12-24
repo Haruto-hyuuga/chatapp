@@ -49,6 +49,7 @@ class _ContactsPageState extends State<ContactsPage> {
       body: BlocListener<ContactsBloc, ContactsState>(
         listener: (context, state) async {
           final contactsBloc = BlocProvider.of<ContactsBloc>(context);
+
           if (state is ConversationReady) {
             var res = await Navigator.push(
               context,

@@ -1,17 +1,17 @@
 import 'dart:convert';
-import 'package:chatapp/core/globals.dart';
 import 'package:chatapp/features/auth/data/models/user_model.dart';
 import 'package:http/http.dart' as http;
 
 class AuthRemoteDataSource {
-  final String baseUrl = '$backendApiBaseUrl/auth';
+  final String baseUrl;
+  AuthRemoteDataSource({required this.baseUrl});
 
   Future<UserModel> login({
     required String email,
     required String password,
   }) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/login'),
+      Uri.parse('$baseUrl/auth/login'),
       body: jsonEncode({'email': email, 'password': password}),
       headers: {'Content-Type': 'application/json'},
     );
@@ -28,7 +28,7 @@ class AuthRemoteDataSource {
     //   "Sending Req: \nusername: $username \n email: $email \n password: $password",
     // );
     final response = await http.post(
-      Uri.parse('$baseUrl/register'),
+      Uri.parse('$baseUrl/auth/register'),
       body: jsonEncode({
         'username': username,
         'email': email,

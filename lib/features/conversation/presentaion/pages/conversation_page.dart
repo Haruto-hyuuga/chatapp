@@ -60,17 +60,23 @@ class _ConversationPageState extends State<ConversationPage> {
                     children: [
                       _buildRecentContact(
                         context,
-                        'DSP',
-                        "https://i.ibb.co/ym3hVfTD/account.png",
+                        '0',
+                        'Gemini',
+                        "assets/img/logo/gemini-color.png",
+                        asset: true,
                       ),
                       _buildRecentContact(
                         context,
-                        'Support',
-                        "https://i.ibb.co/ym3hVfTD/account.png",
+                        '0',
+                        'DSP',
+                        "assets/img/extra/RecentContactPlaceholder.jpg",
+                        asset: true,
                       ),
                       ...state.recentContacts.map(
                         (c) => _buildRecentContact(
                           context,
+                          // TODO   c.id is not conversation id pass conversation id from backend
+                          c.id,
                           c.username,
                           c.profileUrl,
                         ),
@@ -95,7 +101,7 @@ class _ConversationPageState extends State<ConversationPage> {
               );
             },
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 2),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
@@ -158,11 +164,15 @@ class _ConversationPageState extends State<ConversationPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          final reRecentsBloc = BlocProvider.of<RecentsBloc>(context);
+          var res = await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => ContactsPage()),
           );
+          if (res == null) {
+            reRecentsBloc.add(LoadRecentContacts());
+          }
         },
         backgroundColor: DefaultColors.contactButtonColor,
         child: Icon(Icons.contacts, color: Colors.white),
@@ -172,21 +182,49 @@ class _ConversationPageState extends State<ConversationPage> {
 
   Widget _buildRecentContact(
     BuildContext context,
+    String conversationId,
     String name,
-    String profilePic,
-  ) {
+    String profileUrl, {
+    bool asset = false,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        children: [
-          CircleAvatar(
-            radius: 30,
-            backgroundImage: NetworkImage(profilePic),
-            backgroundColor: DefaultColors.profileIconBackground,
-          ),
-          SizedBox(height: 5),
-          Text(name, style: Theme.of(context).textTheme.bodyMedium),
-        ],
+      child: InkWell(
+        borderRadius: BorderRadius.circular(40),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatPage(
+                conversationId: conversationId,
+                participantName: name,
+                participantProfileUrl: profileUrl,
+              ),
+            ),
+          );
+        },
+        child: Column(
+          children: [
+            CircleAvatar(
+              radius: 30,
+              backgroundColor: DefaultColors.profileIconBackground,
+              backgroundImage: profileUrl.isNotEmpty
+                  ? (asset
+                        ? AssetImage(profileUrl) as ImageProvider
+                        : NetworkImage(profileUrl))
+                  : null,
+              child: profileUrl.isEmpty
+                  ? const Icon(Icons.person, color: Colors.white)
+                  : null,
+            ),
+            const SizedBox(height: 5),
+            Text(
+              name,
+              style: Theme.of(context).textTheme.bodyMedium,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
       ),
     );
   }
