@@ -21,6 +21,10 @@ import 'package:chatapp/features/conversation/domain/usecases/check_or_create_co
 import 'package:chatapp/features/conversation/domain/usecases/fetch_conversation_use_case.dart';
 import 'package:chatapp/features/conversation/presentaion/bloc/conversation_bloc.dart';
 import 'package:chatapp/features/conversation/presentaion/pages/conversation_page.dart';
+import 'package:chatapp/features/recents/data/datasources/recents_remote_data_source.dart';
+import 'package:chatapp/features/recents/data/repositories/recents_repository_impl.dart';
+import 'package:chatapp/features/recents/domain/usecases/recent_contacts_use_case.dart';
+import 'package:chatapp/features/recents/presentaion/bloc/recents_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/auth/presentaion/pages/register_page.dart';
@@ -40,7 +44,9 @@ void main() {
   final contactsRepository = ContactsRepositoryImpl(
     remoteDataSource: ContactsRemoteDataSource(),
   );
-
+  final recentsRepository = RecentsRepositoryImpl(
+    recentsRemoteDataSource: RecentsRemoteDataSource(),
+  );
   runApp(
     MyApp(
       socketService: SocketService(),
@@ -48,6 +54,7 @@ void main() {
       conversationRepository: conversationRepository,
       messagesRepository: messagesRepository,
       contactsRepository: contactsRepository,
+      recentsRepository: recentsRepository,
     ),
   );
 }
@@ -58,6 +65,7 @@ class MyApp extends StatefulWidget {
   final ConversationRepositoryImpl conversationRepository;
   final MessageRepositoryImpl messagesRepository;
   final ContactsRepositoryImpl contactsRepository;
+  final RecentsRepositoryImpl recentsRepository;
 
   const MyApp({
     super.key,
@@ -66,6 +74,7 @@ class MyApp extends StatefulWidget {
     required this.conversationRepository,
     required this.messagesRepository,
     required this.contactsRepository,
+    required this.recentsRepository,
   });
 
   @override
@@ -117,6 +126,14 @@ class _MyAppState extends State<MyApp> {
             checkOrCreateConversationUseCase: CheckOrCreateConversationUseCase(
               conversationsRepository:
                   widget.conversationRepository, //ConversationRepositoryImpl
+            ),
+          ),
+        ),
+
+        BlocProvider(
+          create: (_) => RecentsBloc(
+            recentContactsUseCase: RecentContactsUseCase(
+              recentsRepository: widget.recentsRepository,
             ),
           ),
         ),

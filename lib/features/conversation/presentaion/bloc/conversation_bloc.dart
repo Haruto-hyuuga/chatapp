@@ -35,7 +35,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationState> {
 
   ConversationBloc({required this.fetchConversationUseCase})
     : super(ConversationsInitial()) {
-    on<FetchConversations>(_onFetchConversations);
     _initializeSocketListener();
+    on<FetchConversations>(_onFetchConversations);
   }
 }

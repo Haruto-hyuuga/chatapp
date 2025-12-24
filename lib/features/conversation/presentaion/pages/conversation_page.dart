@@ -4,6 +4,9 @@ import 'package:chatapp/features/contacts/presentaion/pages/contacts_page.dart';
 import 'package:chatapp/features/conversation/presentaion/bloc/conversation_bloc.dart';
 import 'package:chatapp/features/conversation/presentaion/bloc/conversation_event.dart';
 import 'package:chatapp/features/conversation/presentaion/bloc/conversation_state.dart';
+import 'package:chatapp/features/recents/presentaion/bloc/recents_bloc.dart';
+import 'package:chatapp/features/recents/presentaion/bloc/recents_event.dart';
+import 'package:chatapp/features/recents/presentaion/bloc/recents_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,6 +22,7 @@ class _ConversationPageState extends State<ConversationPage> {
   void initState() {
     super.initState();
     BlocProvider.of<ConversationBloc>(context).add(FetchConversations());
+    BlocProvider.of<RecentsBloc>(context).add(LoadRecentContacts());
   }
 
   @override
@@ -42,24 +46,54 @@ class _ConversationPageState extends State<ConversationPage> {
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
-          Container(
-            height: 100,
-            padding: EdgeInsets.all(5),
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                _buildRecentContact(
-                  context,
-                  "Gemini",
-                  'assets/img/logo/gemini-color.png',
+          BlocBuilder<RecentsBloc, RecentsState>(
+            builder: (context, state) {
+              if (state is RecentsLoading) {
+                return Center(child: CircularProgressIndicator());
+              } //
+              else if (state is RecentsLoaded) {
+                return Container(
+                  height: 100,
+                  padding: EdgeInsets.all(5),
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      _buildRecentContact(
+                        context,
+                        'DSP',
+                        "https://i.ibb.co/ym3hVfTD/account.png",
+                      ),
+                      _buildRecentContact(
+                        context,
+                        'Support',
+                        "https://i.ibb.co/ym3hVfTD/account.png",
+                      ),
+                      ...state.recentContacts.map(
+                        (c) => _buildRecentContact(
+                          context,
+                          c.username,
+                          c.profileUrl,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              } //
+              else if (state is RecentsError) {
+                return Center(
+                  child: Text(
+                    state.message,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                );
+              }
+              return Center(
+                child: Text(
+                  'No recent Contacts Found',
+                  style: TextStyle(color: Colors.lightBlue),
                 ),
-                _buildRecentContact(
-                  context,
-                  "DSP",
-                  'assets/img/extra/RecentContactPlaceholder.jpg',
-                ),
-              ],
-            ),
+              );
+            },
           ),
           SizedBox(height: 10),
           Expanded(
@@ -147,7 +181,7 @@ class _ConversationPageState extends State<ConversationPage> {
         children: [
           CircleAvatar(
             radius: 30,
-            backgroundImage: AssetImage(profilePic),
+            backgroundImage: NetworkImage(profilePic),
             backgroundColor: DefaultColors.profileIconBackground,
           ),
           SizedBox(height: 5),

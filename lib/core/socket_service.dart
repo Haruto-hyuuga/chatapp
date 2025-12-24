@@ -1,5 +1,6 @@
 import 'package:chatapp/core/globals.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// ignore: library_prefixes
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class SocketService {
@@ -23,13 +24,9 @@ class SocketService {
           .build(),
     );
     _socket.connect();
-    _socket.onConnect((_) {
-      print("Socket Connected: ${_socket.id}");
-    });
+    _socket.onConnect((_) {});
 
-    _socket.onDisconnect((_) {
-      print("Socket Disconnected");
-    });
+    _socket.onDisconnect((_) {});
   }
 
   IO.Socket get socket => _socket;

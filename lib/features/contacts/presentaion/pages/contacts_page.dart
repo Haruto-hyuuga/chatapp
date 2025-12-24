@@ -69,7 +69,8 @@ class _ContactsPageState extends State<ContactsPage> {
           builder: (context, state) {
             if (state is ContactsLoading) {
               return Center(child: CircularProgressIndicator());
-            } else if (state is ContactsLoaded) {
+            } //
+            else if (state is ContactsLoaded) {
               return ListView.builder(
                 padding: EdgeInsets.only(top: 10),
                 itemCount: state.contacts.length,
