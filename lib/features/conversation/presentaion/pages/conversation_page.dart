@@ -4,9 +4,11 @@ import 'package:chatapp/features/contacts/presentaion/pages/contacts_page.dart';
 import 'package:chatapp/features/conversation/presentaion/bloc/conversation_bloc.dart';
 import 'package:chatapp/features/conversation/presentaion/bloc/conversation_event.dart';
 import 'package:chatapp/features/conversation/presentaion/bloc/conversation_state.dart';
+import 'package:chatapp/features/gemini/dsp_page.dart';
 import 'package:chatapp/features/recents/presentaion/bloc/recents_bloc.dart';
 import 'package:chatapp/features/recents/presentaion/bloc/recents_event.dart';
 import 'package:chatapp/features/recents/presentaion/bloc/recents_state.dart';
+import 'package:chatapp/features/gemini/gemini_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -60,23 +62,22 @@ class _ConversationPageState extends State<ConversationPage> {
                     children: [
                       _buildRecentContact(
                         context,
-                        '0',
+                        'local',
                         'Gemini',
                         "assets/img/logo/gemini-color.png",
                         asset: true,
                       ),
                       _buildRecentContact(
                         context,
-                        '0',
+                        'creator',
                         'DSP',
-                        "assets/img/extra/RecentContactPlaceholder.jpg",
+                        "assets/icon/app_icon.png",
                         asset: true,
                       ),
                       ...state.recentContacts.map(
                         (c) => _buildRecentContact(
                           context,
-                          // TODO   c.id is not conversation id pass conversation id from backend
-                          c.id,
+                          c.conversationId,
                           c.username,
                           c.profileUrl,
                         ),
@@ -192,17 +193,28 @@ class _ConversationPageState extends State<ConversationPage> {
       child: InkWell(
         borderRadius: BorderRadius.circular(40),
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ChatPage(
-                conversationId: conversationId,
-                participantName: name,
-                participantProfileUrl: profileUrl,
-              ),
-            ),
-          );
+          Widget page;
+
+          if (conversationId == 'local') {
+            page = LocalGeminiChat(
+              participantName: name,
+              participantProfileUrl: profileUrl,
+              isAsset: asset,
+            );
+          } else if (conversationId == 'creator') {
+            page = const DspPage();
+          } else {
+            page = ChatPage(
+              conversationId: conversationId,
+              participantName: name,
+              participantProfileUrl: profileUrl,
+              ass: asset,
+            );
+          }
+
+          Navigator.push(context, MaterialPageRoute(builder: (_) => page));
         },
+
         child: Column(
           children: [
             CircleAvatar(

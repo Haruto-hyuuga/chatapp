@@ -25,29 +25,12 @@ class DefaultColors {
 class AppTheme {
   static ThemeData get darkTheme {
     return ThemeData(
+      useMaterial3: true,
       primaryColor: Colors.white,
-      scaffoldBackgroundColor: Color(0xFF1B202D),
-      textTheme: TextTheme(
-        titleMedium: GoogleFonts.alegreyaSans(
-          fontSize: Fontsizes.medium,
-          color: Colors.white,
-        ),
-        titleLarge: GoogleFonts.alegreyaSans(
-          fontSize: Fontsizes.large,
-          color: Colors.white,
-        ),
-        bodySmall: GoogleFonts.alegreyaSans(
-          fontSize: Fontsizes.standardUp,
-          color: Colors.white,
-        ),
-        bodyMedium: GoogleFonts.alegreyaSans(
-          fontSize: Fontsizes.standard,
-          color: Colors.white,
-        ),
-        bodyLarge: GoogleFonts.alegreyaSans(
-          fontSize: Fontsizes.standardUp,
-          color: Colors.white,
-        ),
+      scaffoldBackgroundColor: const Color(0xFF1B202D),
+      textTheme: GoogleFonts.interTextTheme().apply(
+        bodyColor: Colors.white,
+        displayColor: Colors.white,
       ),
     );
   }

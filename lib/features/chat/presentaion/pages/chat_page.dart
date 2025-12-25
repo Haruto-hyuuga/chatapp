@@ -12,11 +12,13 @@ class ChatPage extends StatefulWidget {
   final String conversationId;
   final String participantName;
   final String participantProfileUrl;
+  final bool ass;
   const ChatPage({
     super.key,
     required this.conversationId,
     required this.participantName,
     required this.participantProfileUrl,
+    this.ass = false,
   });
 
   @override
@@ -104,7 +106,15 @@ class _ChatPageState extends State<ChatPage> {
                 children: [
                   CircleAvatar(
                     radius: 22,
-                    backgroundImage: NetworkImage(widget.participantProfileUrl),
+                    backgroundImage: widget.participantProfileUrl.isNotEmpty
+                        ? (widget.ass
+                              ? AssetImage(widget.participantProfileUrl)
+                                    as ImageProvider
+                              : NetworkImage(widget.participantProfileUrl))
+                        : null,
+                    child: widget.participantProfileUrl.isEmpty
+                        ? const Icon(Icons.person, color: Colors.white)
+                        : null,
                   ),
                   SizedBox(width: 12),
                   Text(
