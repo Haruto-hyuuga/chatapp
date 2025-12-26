@@ -37,7 +37,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         add(ReceiveMessageEvent(data));
       });
     } catch (e) {
-      emit(ChatErrorState('Failed to load messages.'));
+      emit(ChatErrorState(error: 'Backend Says:\n$e'));
     }
   }
 

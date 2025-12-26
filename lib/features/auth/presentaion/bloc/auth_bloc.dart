@@ -73,5 +73,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<RegisterEvent>(_onRegister);
     on<LoginEvent>(_onLogin);
     on<CheckAuthEvent>(_onCheckAuth);
+    on<LogoutEvent>((event, emit) async {
+      await _storage.deleteAll();
+      // print("DELETE LOACL STOARGE");
+      emit(AuthUnauthenticated());
+    });
   }
 }

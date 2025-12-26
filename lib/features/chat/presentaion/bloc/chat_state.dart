@@ -11,7 +11,7 @@ class ChatLoadedState extends ChatState {
 }
 
 class ChatErrorState extends ChatState {
-  final String message;
+  final String error;
 
-  ChatErrorState(this.message);
+  ChatErrorState({required this.error});
 }

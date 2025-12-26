@@ -18,8 +18,10 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
     try {
       final contacts = await fetchContactsUseCase();
       emit(ContactsLoaded(contacts));
-    } catch (error) {
-      emit(ContactsError('Failed to fetch contacts $error'));
+    } catch (err) {
+      emit(
+        ContactsError(error: 'Failed to fetch contacts\nBackend Says:\n$err'),
+      );
     }
   }
 
@@ -32,8 +34,8 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
       await addContactUseCase(email: event.email);
       emit(ContactsAdded());
       add(FetchContacts());
-    } catch (error) {
-      emit(ContactsError('Failed to add contacts $error'));
+    } catch (err) {
+      emit(ContactsError(error: 'Failed to add contacts\nBackend Says:\n$err'));
     }
   }
 
@@ -53,8 +55,12 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
           contactProfileUrl: event.contactProfileUrl,
         ),
       );
-    } catch (error) {
-      emit(ContactsError('Failed to start conversation $error'));
+    } catch (err) {
+      emit(
+        ContactsError(
+          error: 'Failed to start conversation.\nBackend Says:\n$err',
+        ),
+      );
     }
   }
 

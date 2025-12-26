@@ -12,6 +12,6 @@ class RecentsLoaded extends RecentsState {
 }
 
 class RecentsError extends RecentsState {
-  final String message;
-  RecentsError(this.message);
+  final String error;
+  RecentsError({required this.error});
 }

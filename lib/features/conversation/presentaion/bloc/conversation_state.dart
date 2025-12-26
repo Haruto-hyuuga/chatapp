@@ -13,7 +13,7 @@ class ConversationsLoaded extends ConversationState {
 }
 
 class ConversationsError extends ConversationState {
-  final String message;
+  final String error;
 
-  ConversationsError(this.message);
+  ConversationsError({required this.error});
 }

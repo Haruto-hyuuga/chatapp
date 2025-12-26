@@ -14,8 +14,8 @@ class RecentsBloc extends Bloc<RecentsEvent, RecentsState> {
     try {
       final recentcontacts = await recentContactsUseCase();
       emit(RecentsLoaded(recentcontacts));
-    } catch (error) {
-      emit(RecentsError('Failed to load recent contacts'));
+    } catch (err) {
+      emit(RecentsError(error: 'Backend Says:\n$err'));
     }
   }
 

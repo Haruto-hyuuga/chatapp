@@ -21,7 +21,8 @@ class MessagesRemoteDataSource {
       List data = jsonDecode(response.body);
       return data.map((json) => MessageModel.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to fetch messages.');
+      String errorMessage = jsonDecode(response.body)['error'];
+      throw Exception('${response.statusCode}: BACKEND WARNING\n$errorMessage');
     }
   }
 }

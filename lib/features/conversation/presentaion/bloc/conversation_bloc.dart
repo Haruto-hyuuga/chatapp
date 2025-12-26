@@ -16,8 +16,8 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationState> {
     try {
       final conversations = await fetchConversationUseCase();
       emit(ConversationsLoaded(conversations));
-    } catch (error) {
-      emit(ConversationsError('Failed to load conversations'));
+    } catch (e) {
+      emit(ConversationsError(error: 'Backend Says:\n$e'));
     }
   }
 

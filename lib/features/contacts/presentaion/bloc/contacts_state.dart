@@ -12,8 +12,8 @@ class ContactsLoaded extends ContactsState {
 }
 
 class ContactsError extends ContactsState {
-  final String message;
-  ContactsError(this.message);
+  final String error;
+  ContactsError({required this.error});
 }
 
 class ContactsAdded extends ContactsState {}

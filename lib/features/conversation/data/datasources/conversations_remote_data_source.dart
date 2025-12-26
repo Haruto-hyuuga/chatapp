@@ -17,12 +17,19 @@ class ConversationsRemoteDataSource {
       headers: {'Authorization': 'Bearer $token'},
     );
 
-    if (response.statusCode == 200) {
-      List data = jsonDecode(response.body);
-      return data.map((json) => ConversationModel.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to fetch conversations.');
+    if (response.statusCode == 500) {
+      // ignore: avoid_print
+      print("BACKEND_SERVER_ERROR: ${response.body}");
+      throw Exception(
+        'BACKEND_SERVER_ERROR:500\nfaild to fetch conversation\nCheck console for more details',
+      );
+    } else if (response.statusCode != 200) {
+      String errorMessage = jsonDecode(response.body)['error'];
+      throw Exception('${response.statusCode}: BACKEND WARNING\n$errorMessage');
     }
+
+    List data = jsonDecode(response.body);
+    return data.map((json) => ConversationModel.fromJson(json)).toList();
   }
 
   Future<String> checkOrCreateConversation({required String contactId}) async {
@@ -37,11 +44,17 @@ class ConversationsRemoteDataSource {
       },
     );
 
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      return data['conversationId'];
-    } else {
-      throw Exception('Failed to check or create conversations.');
+    if (response.statusCode == 500) {
+      // ignore: avoid_print
+      print("BACKEND_SERVER_ERROR: ${response.body}");
+      throw Exception(
+        'BACKEND_SERVER_ERROR:500\nFailed to check or create conversation\nCheck console for more details',
+      );
+    } else if (response.statusCode != 200) {
+      String errorMessage = jsonDecode(response.body)['error'];
+      throw Exception('${response.statusCode}: BACKEND WARNING\n$errorMessage');
     }
+    var data = jsonDecode(response.body);
+    return data['conversationId'];
   }
 }

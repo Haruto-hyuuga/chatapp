@@ -11,7 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final bool isLogout;
+  const LoginPage({super.key, this.isLogout = false});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -90,7 +91,8 @@ class _LoginPageState extends State<LoginPage> {
                           '/conversationspage',
                           (route) => false,
                         );
-                      } else if (state is AuthUnauthenticated) {
+                      } else if (state is AuthUnauthenticated &&
+                          widget.isLogout) {
                         showErrorPopup(
                           context: context,
                           errorName: "Session Expired",

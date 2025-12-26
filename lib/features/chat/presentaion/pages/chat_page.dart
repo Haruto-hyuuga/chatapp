@@ -1,3 +1,4 @@
+import 'package:chatapp/core/show_error.dart';
 import 'package:chatapp/core/theme.dart';
 import 'dart:ui';
 import 'package:chatapp/features/chat/presentaion/bloc/chat_bloc.dart';
@@ -86,13 +87,14 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: ClipRRect(
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
             child: AppBar(
-              backgroundColor: Colors.transparent,
+              backgroundColor: const Color(0xFF1F1F1F).withValues(alpha: .5),
               elevation: 0,
               leading: IconButton(
                 icon: Icon(
@@ -129,11 +131,31 @@ class _ChatPageState extends State<ChatPage> {
               ),
               actions: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showErrorPopup(
+                      context: context,
+                      errorName: "WARNING",
+                      errorType: "unimplemented-warning",
+                      errorText:
+                          "This feature is not yet implemented by lazy developer.",
+                      errorIcon: Icons.construction,
+                      errorColor: Colors.green,
+                    );
+                  },
                   icon: Icon(Icons.search, color: Colors.white),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showErrorPopup(
+                      context: context,
+                      errorName: "WARNING",
+                      errorType: "unimplemented-warning",
+                      errorText:
+                          "This feature is not yet implemented by lazy developer.",
+                      errorIcon: Icons.construction,
+                      errorColor: Colors.green,
+                    );
+                  },
                   icon: Icon(Icons.more_vert, color: Colors.white),
                 ),
               ],
@@ -173,9 +195,16 @@ class _ChatPageState extends State<ChatPage> {
                     },
                   );
                 } else if (state is ChatErrorState) {
+                  showErrorPopup(
+                    context: context,
+                    errorName: "CHAT LOADING FAILED",
+                    errorType: "External-error",
+                    errorText: state.error,
+                    errorIcon: Icons.warning_amber_rounded,
+                  );
                   return Center(
                     child: Text(
-                      state.message,
+                      "Failed to load contacts",
                       style: TextStyle(color: Colors.red),
                     ),
                   );
@@ -215,7 +244,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.14),
+                color: Colors.white.withValues(alpha: .2),
                 blurRadius: 4,
                 offset: Offset(0, 2),
               ),
@@ -234,7 +263,7 @@ class _ChatPageState extends State<ChatPage> {
               em: const TextStyle(fontStyle: FontStyle.italic),
               code: TextStyle(
                 fontFamily: 'monospace',
-                backgroundColor: Colors.black.withOpacity(0.15),
+                backgroundColor: Colors.black.withValues(alpha: .15),
                 fontSize: 14,
                 color: Colors.white70,
               ),
@@ -265,7 +294,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.white.withValues(alpha: .2),
                 blurRadius: 4,
                 offset: Offset(0, 2),
               ),
@@ -284,7 +313,7 @@ class _ChatPageState extends State<ChatPage> {
               em: const TextStyle(fontStyle: FontStyle.italic),
               code: TextStyle(
                 fontFamily: 'monospace',
-                backgroundColor: Colors.black.withOpacity(0.15),
+                backgroundColor: Colors.black.withValues(alpha: .15),
                 fontSize: 14,
                 color: Colors.white70,
               ),
@@ -298,8 +327,9 @@ class _ChatPageState extends State<ChatPage> {
   _buildMessageInput() {
     return Container(
       decoration: BoxDecoration(
-        color: DefaultColors.sentMessageInput,
+        color: DefaultColors.sentMessageInput.withValues(alpha: .2),
         borderRadius: BorderRadius.circular(25),
+        border: Border.all(color: Colors.grey.withValues(alpha: 0.4)),
       ),
       margin: EdgeInsets.all(10),
       padding: EdgeInsets.symmetric(horizontal: 10),
@@ -307,7 +337,17 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           GestureDetector(
             child: Icon(Icons.camera_alt, color: Colors.grey),
-            onTap: () {},
+            onTap: () {
+              showErrorPopup(
+                context: context,
+                errorName: "WARNING",
+                errorType: "unimplemented-warning",
+                errorText:
+                    "This feature is not yet implemented by lazy developer.",
+                errorIcon: Icons.construction,
+                errorColor: Colors.green,
+              );
+            },
           ),
           SizedBox(width: 10),
           Expanded(
