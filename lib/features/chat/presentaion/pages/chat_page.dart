@@ -137,7 +137,7 @@ class _ChatPageState extends State<ChatPage> {
                       errorName: "WARNING",
                       errorType: "unimplemented-warning",
                       errorText:
-                          "This feature is not yet implemented by lazy developer.",
+                          "This feature is not yet implemented.\n~lazy developer.",
                       errorIcon: Icons.construction,
                       errorColor: Colors.green,
                     );
@@ -151,7 +151,7 @@ class _ChatPageState extends State<ChatPage> {
                       errorName: "WARNING",
                       errorType: "unimplemented-warning",
                       errorText:
-                          "This feature is not yet implemented by lazy developer.",
+                          "This feature is not yet implemented \n~lazy developer.",
                       errorIcon: Icons.construction,
                       errorColor: Colors.green,
                     );
@@ -343,7 +343,7 @@ class _ChatPageState extends State<ChatPage> {
                 errorName: "WARNING",
                 errorType: "unimplemented-warning",
                 errorText:
-                    "This feature is not yet implemented by lazy developer.",
+                    "This feature is not yet implemented\n~lazy developer.",
                 errorIcon: Icons.construction,
                 errorColor: Colors.green,
               );

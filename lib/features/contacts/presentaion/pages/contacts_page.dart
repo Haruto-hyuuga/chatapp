@@ -190,7 +190,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                     errorName: "WARNING",
                                     errorType: "unimplemented-warning",
                                     errorText:
-                                        "This feature is not yet implemented by lazy developer.",
+                                        "This feature is not yet implemented\n~lazy developer.",
                                     errorIcon: Icons.construction,
                                     errorColor: Colors.green,
                                   );

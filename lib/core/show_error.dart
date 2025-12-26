@@ -159,9 +159,13 @@ class ErrorPopupContent extends StatelessWidget {
                       },
                       style: OutlinedButton.styleFrom(
                         foregroundColor: errorColor,
-                        side: BorderSide(color: errorColor),
+                        backgroundColor: const Color(0xFF121212),
+                        side: BorderSide(color: errorColor, width: 2),
                       ),
-                      child: const Text("Report Issue"),
+                      child: const Text(
+                        "Report Issue",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ],

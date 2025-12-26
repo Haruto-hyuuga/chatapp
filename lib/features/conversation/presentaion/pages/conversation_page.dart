@@ -8,11 +8,12 @@ import 'package:chatapp/features/contacts/presentaion/pages/contacts_page.dart';
 import 'package:chatapp/features/conversation/presentaion/bloc/conversation_bloc.dart';
 import 'package:chatapp/features/conversation/presentaion/bloc/conversation_event.dart';
 import 'package:chatapp/features/conversation/presentaion/bloc/conversation_state.dart';
-import 'package:chatapp/features/gemini/dsp_page.dart';
+import 'package:chatapp/features/rushed/dsp_page.dart';
 import 'package:chatapp/features/recents/presentaion/bloc/recents_bloc.dart';
 import 'package:chatapp/features/recents/presentaion/bloc/recents_event.dart';
 import 'package:chatapp/features/recents/presentaion/bloc/recents_state.dart';
-import 'package:chatapp/features/gemini/gemini_page.dart';
+import 'package:chatapp/features/rushed/gemini_page.dart';
+import 'package:chatapp/features/rushed/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -254,7 +255,7 @@ class _ConversationPageState extends State<ConversationPage> {
                       errorName: "WARNING",
                       errorType: "unimplemented-warning",
                       errorText:
-                          "This feature is not yet implemented by lazy developer.",
+                          "This feature is not yet implemented\n~lazy developer.",
                       errorIcon: Icons.construction,
                       errorColor: Colors.green,
                     );
@@ -270,7 +271,12 @@ class _ConversationPageState extends State<ConversationPage> {
                 child: IconButton(
                   splashRadius: 22,
                   icon: const Icon(Icons.settings, color: Colors.white),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => SettingsPage()),
+                    );
+                  },
                 ),
               ),
               const SizedBox(width: 8),

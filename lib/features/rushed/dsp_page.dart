@@ -37,7 +37,7 @@ class _DspPageState extends State<DspPage> with TickerProviderStateMixin {
   // CONFIGURATION
   final String _musicAsset = 'audio/Silhouette.mp3';
   final String _devName = "DSP-3";
-  final String _tagline = "Creator of this project.";
+  final String _tagline = "Creator's page | Project info.";
   final String _introText =
       "A real-time chat app built with Flutter (Bloc) and a Node.js + Express (TypeScript) backend, featuring Socket.IO for live messaging, Firebase Authentication, JWT security, and PostgreSQL for persistent storage. "
       "The complete source code is provided below. Feel free to review the implementation, report bugs, or suggest new features. "
@@ -219,6 +219,7 @@ class _DspPageState extends State<DspPage> with TickerProviderStateMixin {
       vsync: this,
       duration: const Duration(seconds: 2),
     )..repeat(reverse: true);
+    _toggleMusic();
   }
 
   @override
@@ -248,7 +249,7 @@ class _DspPageState extends State<DspPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final Color bgStart = const Color(0xFF0F172A);
+    final Color bgStart = const Color(0xFF151515);
     final Color accent = const Color.fromARGB(255, 255, 117, 244);
 
     // Skill Filtering
@@ -265,7 +266,7 @@ class _DspPageState extends State<DspPage> with TickerProviderStateMixin {
         leading: Container(
           margin: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withValues(alpha: .3),
             shape: BoxShape.circle,
           ),
           child: IconButton(
@@ -289,7 +290,7 @@ class _DspPageState extends State<DspPage> with TickerProviderStateMixin {
               height: 400,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: accent.withOpacity(0.15),
+                color: accent.withValues(alpha: 0.1),
                 backgroundBlendMode: BlendMode.srcIn,
               ),
             ),
@@ -302,7 +303,8 @@ class _DspPageState extends State<DspPage> with TickerProviderStateMixin {
               height: 300,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.blueAccent.withOpacity(0.1),
+                color: Colors.blueAccent.withValues(alpha: 0.1),
+                backgroundBlendMode: BlendMode.srcIn,
               ), //filter: ImageFilter.blur(sigmaX: 80, sigmaY: 80)),
             ),
           ),
@@ -393,8 +395,8 @@ class _DspPageState extends State<DspPage> with TickerProviderStateMixin {
                                             boxShadow: [
                                               if (_isPlaying)
                                                 BoxShadow(
-                                                  color: accent.withOpacity(
-                                                    0.5,
+                                                  color: accent.withValues(
+                                                    alpha: 0.5,
                                                   ),
                                                   blurRadius:
                                                       15 *
@@ -468,7 +470,7 @@ class _DspPageState extends State<DspPage> with TickerProviderStateMixin {
                                   _tagline,
                                   style: TextStyle(
                                     fontSize: 15,
-                                    color: Colors.white.withOpacity(0.7),
+                                    color: Colors.white.withValues(alpha: 0.7),
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -487,12 +489,12 @@ class _DspPageState extends State<DspPage> with TickerProviderStateMixin {
                               ),
                               decoration: BoxDecoration(
                                 color: _isPlaying
-                                    ? accent.withOpacity(0.2)
-                                    : Colors.white.withOpacity(0.05),
+                                    ? accent.withValues(alpha: 0.2)
+                                    : Colors.white.withValues(alpha: 0.05),
                                 borderRadius: BorderRadius.circular(30),
                                 border: Border.all(
                                   color: _isPlaying
-                                      ? accent.withOpacity(0.5)
+                                      ? accent.withValues(alpha: 0.5)
                                       : Colors.white12,
                                 ),
                               ),
@@ -745,14 +747,14 @@ class _GlassContainer extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Colors.white.withOpacity(0.08),
-            Colors.white.withOpacity(0.03),
+            Colors.white.withValues(alpha: 0.08),
+            Colors.white.withValues(alpha: 0.03),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.1)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
       ),
       child: child,
     );
@@ -780,9 +782,9 @@ class _SocialChip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: color.withOpacity(0.3)),
+          border: Border.all(color: color.withValues(alpha: 0.3)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -827,9 +829,9 @@ class _CompactActionCard extends StatelessWidget {
         child: Container(
           height: 60,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.05),
+            color: Colors.white.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: color.withOpacity(0.3)),
+            border: Border.all(color: color.withValues(alpha: 0.3)),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -862,14 +864,14 @@ class _SkillBox extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            skill.color.withOpacity(0.15),
-            Colors.white.withOpacity(0.02),
+            skill.color.withValues(alpha: 0.15),
+            Colors.white.withValues(alpha: 0.02),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: skill.color.withOpacity(0.2)),
+        border: Border.all(color: skill.color.withValues(alpha: 0.2)),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
