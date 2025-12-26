@@ -10,6 +10,11 @@ class Fontsizes {
 }
 
 class DefaultColors {
+  static const Color authPageBg = Color(0xFF000000);
+  static const Color authPageElements = Color(0xFF6200FF);
+  static const Color authPageFields = Color(0xFF0F71FA);
+  static const Color authPageButton = Color.fromARGB(255, 93, 111, 232);
+
   static const Color greyText = Color(0xFFB3B9C9);
   static const Color whiteText = Color(0xFFFFFFFF);
   static const Color senderMessage = Color(0xFF7A8194);

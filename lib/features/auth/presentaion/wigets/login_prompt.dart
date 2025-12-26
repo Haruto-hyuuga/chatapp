@@ -1,3 +1,4 @@
+import 'package:chatapp/core/theme.dart';
 import 'package:flutter/material.dart';
 
 class LoginPrompt extends StatelessWidget {
@@ -23,7 +24,10 @@ class LoginPrompt extends StatelessWidget {
             children: [
               TextSpan(
                 text: subtitle,
-                style: TextStyle(color: Colors.blue),
+                style: TextStyle(
+                  color: DefaultColors.authPageFields,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),

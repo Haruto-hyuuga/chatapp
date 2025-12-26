@@ -19,7 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await registerUseCase.call(event.username, event.email, event.password);
       emit(AuthSuccess(message: 'Account Registered Successfully.'));
     } catch (e) {
-      emit(AuthFailure(error: 'Registration Failed. $e'));
+      emit(AuthFailure(error: 'Backend Says:\n$e'));
     }
   }
 
@@ -31,7 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _storage.write(key: 'userId', value: user.id);
       emit(AuthSuccess(message: 'Account Logged-in  Successfully.'));
     } catch (e) {
-      emit(AuthFailure(error: 'Login Failed.'));
+      emit(AuthFailure(error: 'Backend Says:\n$e'));
     }
   }
 
