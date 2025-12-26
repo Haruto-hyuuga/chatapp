@@ -71,7 +71,7 @@ class _ConversationPageState extends State<ConversationPage> {
                         context,
                         'creator',
                         'DSP',
-                        "assets/icon/app_icon.png",
+                        "assets/img/extra/dsp.png",
                         asset: true,
                       ),
                       ...state.recentContacts.map(

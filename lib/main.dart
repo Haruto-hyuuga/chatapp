@@ -1,5 +1,6 @@
 import 'package:chatapp/core/socket_service.dart';
 import 'package:chatapp/di_container.dart';
+import 'package:chatapp/features/auth/presentaion/bloc/auth_event.dart';
 import 'package:chatapp/features/chat/presentaion/bloc/chat_bloc.dart';
 import 'package:chatapp/core/theme.dart';
 import 'package:chatapp/features/auth/presentaion/bloc/auth_bloc.dart';
@@ -31,7 +32,11 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => AuthBloc(registerUseCase: sl(), loginUseCase: sl()),
+          create: (_) => AuthBloc(
+            registerUseCase: sl(),
+            loginUseCase: sl(),
+            checkTokenUseCase: sl(),
+          )..add(CheckAuthEvent()),
         ),
         BlocProvider(
           create: (_) => ConversationBloc(

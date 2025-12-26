@@ -84,11 +84,20 @@ class _LoginPageState extends State<LoginPage> {
                       return AuthButton(text: 'Login', onPressed: _onLogin);
                     },
                     listener: (context, state) {
-                      if (state is AuthSuccess) {
+                      if (state is AuthAuthenticated) {
                         Navigator.pushNamedAndRemoveUntil(
                           context,
                           '/conversationspage',
                           (route) => false,
+                        );
+                      } else if (state is AuthUnauthenticated) {
+                        showErrorPopup(
+                          context: context,
+                          errorName: "Session Expired",
+                          errorType: "security-measure",
+                          errorText:
+                              "Your session token expired. Please login again.",
+                          errorColor: Colors.green,
                         );
                       } else if (state is AuthFailure) {
                         showErrorPopup(

@@ -2,6 +2,7 @@ import 'package:chatapp/core/socket_service.dart';
 import 'package:chatapp/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:chatapp/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:chatapp/features/auth/domain/repositories/auth_repository.dart';
+import 'package:chatapp/features/auth/domain/usecases/check_token_use_case.dart';
 import 'package:chatapp/features/auth/domain/usecases/login_use_case.dart';
 import 'package:chatapp/features/auth/domain/usecases/register_use_case.dart';
 import 'package:chatapp/features/chat/data/datasources/messages_remote_data_source.dart';
@@ -71,6 +72,7 @@ void setupDependencies() {
   // USE CASES
   sl.registerLazySingleton(() => LoginUseCase(repository: sl()));
   sl.registerLazySingleton(() => RegisterUseCase(repository: sl()));
+  sl.registerLazySingleton(() => CheckTokenUseCase(repository: sl()));
   sl.registerLazySingleton(() => FetchConversationUseCase(repository: sl()));
   sl.registerLazySingleton(
     () => FetchMessagesUseCase(messagesRepository: sl()),

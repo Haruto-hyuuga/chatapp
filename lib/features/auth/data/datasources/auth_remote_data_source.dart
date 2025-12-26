@@ -6,6 +6,29 @@ class AuthRemoteDataSource {
   final String baseUrl;
   AuthRemoteDataSource({required this.baseUrl});
 
+  Future<bool> validateToken({required String token}) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/auth/validate'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 500) {
+      // ignore: avoid_print
+      print("BACKEND_SERVER_ERROR: ${response.body}");
+      throw Exception(
+        'BACKEND_SERVER_ERROR:500\nCheck console for more details',
+      );
+    } else if (response.statusCode != 200) {
+      String errorMessage = jsonDecode(response.body)['error'];
+      throw Exception('${response.statusCode}: BACKEND WARNING\n$errorMessage');
+    }
+    // print("validateToken Response: ${response.body}");
+    return jsonDecode(response.body)['valid'] == true;
+  }
+
   Future<UserModel> login({
     required String email,
     required String password,
@@ -16,6 +39,16 @@ class AuthRemoteDataSource {
       headers: {'Content-Type': 'application/json'},
     );
     // print(response.body);
+    if (response.statusCode == 500) {
+      // ignore: avoid_print
+      print("BACKEND_SERVER_ERROR: ${response.body}");
+      throw Exception(
+        'BACKEND_SERVER_ERROR:500\nCheck console for more details',
+      );
+    } else if (response.statusCode != 200) {
+      String errorMessage = jsonDecode(response.body)['error'];
+      throw Exception('${response.statusCode}: BACKEND WARNING\n$errorMessage');
+    }
     return UserModel.fromJson(jsonDecode(response.body)['user']);
   }
 
@@ -38,8 +71,15 @@ class AuthRemoteDataSource {
     );
     // print("Response Body:");
     // print(response.body);
-    if (response.statusCode != 201) {
-      throw Exception('Registration failed: ${response.body}');
+    if (response.statusCode == 500) {
+      // ignore: avoid_print
+      print("BACKEND_SERVER_ERROR: ${response.body}");
+      throw Exception(
+        'BACKEND_SERVER_ERROR:500\nCheck console for more details',
+      );
+    } else if (response.statusCode != 200) {
+      String errorMessage = jsonDecode(response.body)['error'];
+      throw Exception('${response.statusCode}: BACKEND WARNING\n$errorMessage');
     }
   }
 }

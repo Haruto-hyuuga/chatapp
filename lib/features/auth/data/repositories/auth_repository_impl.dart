@@ -8,6 +8,12 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({required this.authRemoteDataSource});
 
   @override
+  Future<bool> validateToken(String? token) async {
+    if (token == null) return false;
+    return await authRemoteDataSource.validateToken(token: token);
+  }
+
+  @override
   Future<UserEntity> login(String email, String password) async {
     return await authRemoteDataSource.login(email: email, password: password);
   }
