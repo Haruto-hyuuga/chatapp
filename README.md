@@ -1,55 +1,25 @@
 # ChatApp (Name not deided yet)
 
 A modern real-time chat application built with **Flutter** for the frontend and a scalable backend architecture.  
-The project is designed to support real-time messaging, future AI-assisted features, and clean extensibility.
+The project is designed to support real-time messaging, AI-assisted features, and extensibility.
 
----
+- This project was developed as part of a college hackathon-style competition.
+- The app build is shared via Firebase App Distribution for testing and evaluation purposes.
 
-## 📌 Project Overview
+## [Backend Repo](https://github.com/Haruto-hyuuga/chatapp-backend)
+
+## [Download Test Build (Android)](https://appdistribution.firebase.google.com/testerapps/1:300532789958:android:edffda26b9031922b89dc7/releases/008t5dvpin1ug?utm_source=firebase-console)
+
+## Project Overview
 
 ChatApp is a cross-platform chat application focusing on:
 
 - Real-time communication
-- Clean architecture
+- Clean industry-grade architecture
 - Scalability for future features (AI, moderation, media, etc.)
 - Developer-friendly structure
 
-The project is currently under active development.
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend
-
-- Flutter 3.35.4 • channel stable
-- Framework • revision d693b4b9db
-- Tools • Dart 3.9.2 • DevTools 2.48.0
-
-### Backend (Planned / In Progress)
-
-- Node.js (node paks are listed in backen repository)
-- TypeScript
-- postresql
-- Socket.IO
-- REST / WebSocket APIs
-- firship
-
----
-
-## 📂 Project Structure
-
-```text
-chatapp/
-├── lib/   # app source code
-│   └── main.dart
-├── android/    # Android platform files
-├── ios/    # iOS platform files
-├── web/    # Web support (if enabled)
-├── test/   # Unit & widget tests
-├── pubspec.yaml    # Flutter dependencies
-└── README.md
-```
+> Each feature is modularized and follows Clean Architecture principles. Business logic resides in the domain layer with use cases and entities, data sources handle external communication, and the presentation layer uses BLoC for predictable state management, with dependency injection for loose coupling and scalability..
 
 ---
 
@@ -59,90 +29,167 @@ chatapp/
 
 Install these (im not goin to explain how, you can find it on thier official documentaions)
 
-- Flutter SDK
+- Flutter/Android SDK
 
-- Git installed
+- Git, java
 
 - Android Emulator or physical device (with debug mode)
 
-### Clone the Repository
+Clone the Repository: `git clone https://github.com/Haruto-hyuuga/chatapp.git`
 
-`git clone https://github.com/Haruto-hyuuga/chatapp.git`
+Go to progect folder: `cd chatapp`
 
-`cd chatapp`
+Install Dependencies: `flutter pub get`
 
-### Install Dependencies
+Run the App: `flutter run`
 
-`flutter pub get`
-
-### Run the App
-
-`flutter run`
-
-> you can use android simulator or something i prefer usb debugging to run on my phone.
+> you can use android simulator or something, i prefer usb debugging to run it on my phone
 
 ---
 
-# ✅ Features
+# Features
 
 ### Already Implemented
 
-- Base ui pages
-- user authentication
+- User registration and login with email (not secure authentication)
+- Token-based session validation and auto-login support
+- One-to-one real-time messaging using Socket.IO
+- Add contacts using registered email addresses
+- Automatic conversation creation between users
+- Fetch and display recent conversations
+- Message history loading per conversation
+- Real-time message delivery and updates
+- User profile support (username, email, profile image)
+- Integrated Gemini AI chatbot for AI-based conversations
+- Proper error handling and loading states across the app
+- markdown for text formatting
 
 ### In Progress
 
-- Almost everything
-- UI layout for chat conversations
-- Message display components
-- App theming and styling
+- User settings to update profile information (profile image, username, etc.)
+- Search functionality for users and conversations
+- Media support for sharing images and files in chats
+- Message actions including reply, edit, and delete
+- Delete conversations and remove contacts
 
 ### Planned Features
 
-- Real-time messaging using WebSockets
-
-- User authentication
-
-- Chat rooms / private chats
-
-- Message timestamps & read receipts
-
-- Media sharing (images, files) (maybe)
-
-- AI-powered chat assistance
-
-- Message moderation
+- Online / offline user presence and last-seen status
+- Stories feature for sharing temporary status updates
+- Stickers and GIF support in conversations
+- Group chats with multiple participants and role-based controls
+- Channels for one-to-many broadcasts and announcements
+- Message reactions and rich message interactions
+- Read receipts and typing indicators
+- Message forwarding and pinning
+- Enhanced media previews and file sharing controls
 
 ---
 
-# 🧩 TODO List
+# 📂 Project Structure
 
-[tick] Design chat UI (message bubbles, input bar)
+```text
+chatapp/
+├── lib/   # app source code
+│   └──
+├── android/    # Android platform files
+├── ios/    # iOS platform files
+├── web/    # Web support
+├── test/   # Unit & widget tests
+├── pubspec.yaml    # Flutter dependencies
+└── README.md
+```
 
-[ ] Implement Socket.IO client in Flutter
+### 1. Core Layer (App-wide utilities)
 
-[ ] Create backend server
+```
+lib/core/
+├── show_error.dart (error popup widget)
+├── animated_gradient_background.dart (ignore this)
+├── socket_service.dart (Shared services Socket.IO)
+├── theme.dart (Global theming & colors)
+```
 
-[tick] Add user authentication
+### 2. Feature-First Modularization
 
-[ ] Connect frontend with backend
+```
+lib/features/
+├── auth/
+├── chat/
+├── contacts/
+├── conversation/
+├── recents/
+├── rushed/
+```
 
-[ ] Improve error handling
+> i was hoping to keep every feature isolated but as it turns out some relied on other for entity models or pages etc, while No feature directly depends on another feature they do use some parts.
 
-[ ] Add unit & widget tests
+### Inside Each Feature:
 
-[ ] Write backend documentation
+### 2A. Data Layer (Infrastructure Layer)
+
+```
+data/
+├── datasource/
+├── models/
+├── repositories/
+```
+
+Responsibilities:
+
+- API calls
+- Socket communication
+- DTOs / JSON parsing
+- External data handling
+
+> This layer depends on external frameworks and converts data into domain-friendly formats.
+
+### 2B. Domain Layer (most important layer)
+
+```
+domain/
+├── entities/
+├── repositories/ (impl)
+├── usecases/
+```
+
+Responsibilities:
+
+- Core business rules
+- Application logic
+- Use cases (SendMessage, LoginUser, FetchContacts)
+
+> No Flutter/HTTP/Socket/UI logic.
+> Just Pure Dart logic
+
+### 2C. Presentation Layer (UI + State Management)
+
+```
+presentation/
+├── bloc/
+│   ├── bloc.dart
+│   ├── event.dart
+│   ├── state.dart
+├── pages/
+├── widgets/
+```
+
+Responsibilities:
+
+- UI rendering
+- State transitions
+- User interactions
+
+### Dependency Injection (DI)
+
+- The app uses Dependency Injection with **GetIt** to manage and provide dependencies across the application.
+- All core services, data sources, repositories, and use cases are registered in a centralized DI container (`di_container.dart`).
+- This approach enforces loose coupling, follows the Dependency Inversion Principle, and keeps the presentation, domain, and data layers independent.
+- Dependencies are resolved lazily at runtime, improving performance and making the codebase easier to scale, test, and maintain.
 
 ---
 
-# 📖 Development Notes
-
-> This project is rushed not my best work, there will be lot of bugs which will be fixed overtime, also i suck at writting SQL queries so most bugs will arise from there only.
-> Major features will be copied from telegram and implemented step-by-step until everything crashes and falls apart..
-
----
-
-# 🤝 Contributing
+# Contributing
 
 Contributions are welcome.
 
@@ -156,8 +203,7 @@ Contributions are welcome.
 
 ---
 
-# 📬 Contact
+# Developer Notes
 
-Maintainer: `Haruto-hyuuga`
-
-For suggestions or issues, please open an issue in the repository.
+> This project is rushed (due to exams) not my best work, there will be few bugs which will be fixed overtime.
+> Major features will be copied from telegram and implemented step-by-step until everything crashes and falls apart..
